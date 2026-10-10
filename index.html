@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTTU LAB | The Science of Sri Lankan Street Food</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#FF2A00',
+                            orange: '#FF6B00',
+                            yellow: '#FFC700',
+                            dark: '#0B0D12',
+                            card: '#161922',
+                            accent: '#FF3B00',
+                            border: '#262A36'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Teko', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'flame': 'flame 1.5s infinite alternate ease-in-out',
+                        'bounce-subtle': 'bounceSubtle 2s infinite',
+                        'sizzle': 'sizzle 0.3s ease infinite alternate'
+                    },
+                    keyframes: {
+                        flame: {
+                            '0%': { transform: 'scale(1) translateY(0) rotate(-1deg)', filter: 'drop-shadow(0 0 15px rgba(255, 107, 0, 0.6))' },
+                            '100%': { transform: 'scale(1.06) translateY(-4px) rotate(1deg)', filter: 'drop-shadow(0 0 30px rgba(255, 42, 0, 0.9))' }
+                        },
+                        bounceSubtle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        },
+                        sizzle: {
+                            '0%': { transform: 'rotate(-1.5deg) scale(0.99)' },
+                            '100%': { transform: 'rotate(1.5deg) scale(1.01)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;900&family=Teko:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #0B0D12;
+            color: #F3F4F6;
+            overflow-x: hidden;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(255, 107, 0, 0.6), 0 0 40px rgba(255, 42, 0, 0.4);
+        }
+
+        .card-glow {
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.8);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-glow:hover {
+            box-shadow: 0 20px 40px -15px rgba(255, 107, 0, 0.35);
+            transform: translateY(-6px);
+        }
+
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(255, 107, 0, 0.12) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .blade-btn {
+            background: linear-gradient(135deg, #FF6B00 0%, #FF2A00 100%);
+            box-shadow: 0 4px 15px rgba(255, 42, 0, 0.4);
+        }
+
+        .blade-btn:hover {
+            box-shadow: 0 6px 25px rgba(255, 107, 0, 0.7);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0D12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF6B00;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-grid-pattern font-sans antialiased selection:bg-brand-orange selection:text-white">
+
+    <!-- Pro Sound Banner -->
+    <div id="soundBanner" class="bg-brand-card/90 backdrop-blur border-b border-white/10 text-xs py-2 px-4 text-center text-gray-300 flex justify-between items-center z-50 relative">
+        <span class="flex items-center gap-2 mx-auto sm:mx-0">
+            <i class="fa-solid fa-volume-high text-brand-yellow animate-pulse"></i>
+            <span><strong>Interactive Sound FX Enabled:</strong> Click anywhere or press sound pads to hear authentic Taka-Taka chopping beats!</span>
+        </span>
+        <button onclick="toggleChoppingSound()" id="sizzle-sound-btn" class="hidden sm:flex items-center gap-2 bg-black/40 hover:bg-white/10 px-3 py-1 rounded-lg border border-white/10 text-xs text-brand-yellow transition">
+            <i id="sound-icon" class="fa-solid fa-volume-high text-brand-yellow"></i>
+            <span id="sound-text" class="font-mono">Sound ON</span>
+        </button>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-brand-dark/80 border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-brand-red via-brand-orange to-brand-yellow flex items-center justify-center text-white shadow-lg shadow-brand-red/30 group-hover:scale-105 transition-transform duration-300">
+                    <i class="fa-solid fa-fire-burner text-2xl text-black"></i>
+                </div>
+                <div>
+                    <span class="font-display text-3xl font-extrabold tracking-wider bg-gradient-to-r from-brand-yellow via-brand-orange to-brand-red bg-clip-text text-transparent">KOTTU LAB</span>
+                    <span class="block text-[10px] tracking-widest text-gray-400 font-semibold -mt-1 uppercase">Sri Lanka's Chopped Science</span>
+                </div>
+            </a>
+
+            <!-- Desktop Links -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide text-gray-300">
+                <a href="#menu" class="hover:text-brand-yellow transition-colors duration-200">MENU</a>
+                <a href="#customizer" class="hover:text-brand-yellow transition-colors duration-200 flex items-center gap-1.5">
+                    <span class="inline-block w-2 h-2 rounded-full bg-brand-red animate-ping"></span>
+                    LAB EXPERIMENT
+                </a>
+                <a href="#taka-taka" class="hover:text-brand-yellow transition-colors duration-200">TAKA TAKA BEATS</a>
+                <a href="#about" class="hover:text-brand-yellow transition-colors duration-200">OUR STORY</a>
+                <a href="#contact" class="hover:text-brand-yellow transition-colors duration-200">LOCATION</a>
+            </nav>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <!-- Cart Button -->
+                <button onclick="openCartModal()" class="relative blade-btn px-4 py-2.5 rounded-xl text-black font-bold flex items-center gap-2 text-sm transition-all duration-300 active:scale-95">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>MY LAB TRAY</span>
+                    <span id="cart-count-badge" class="bg-black text-brand-yellow text-xs px-2 py-0.5 rounded-full font-mono ml-1">0</span>
+                </button>
+
+                <!-- Mobile menu toggle -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-2xl text-gray-300 hover:text-white p-2">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card/95 border-b border-white/10 backdrop-blur-xl px-6 py-5 flex flex-col gap-4">
+            <a href="#menu" onclick="toggleMobileMenu()" class="text-gray-200 hover:text-brand-yellow font-medium">MENU</a>
+            <a href="#customizer" onclick="toggleMobileMenu()" class="text-brand-yellow font-bold flex items-center gap-2">
+                <i class="fa-solid fa-flask"></i> LAB EXPERIMENT
+            </a>
+            <a href="#taka-taka" onclick="toggleMobileMenu()" class="text-gray-200 hover:text-brand-yellow font-medium">TAKA TAKA BEATS</a>
+            <a href="#about" onclick="toggleMobileMenu()" class="text-gray-200 hover:text-brand-yellow font-medium">OUR STORY</a>
+            <a href="#contact" onclick="toggleMobileMenu()" class="text-gray-200 hover:text-brand-yellow font-medium">LOCATION</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-[88vh] flex items-center justify-center pt-8 pb-16 overflow-hidden">
+        <!-- Interactive Steam & Spark Particles Canvas -->
+        <canvas id="sparkCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-50"></canvas>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-red/10 border border-brand-red/30 text-brand-yellow text-xs font-bold tracking-widest uppercase mb-6 animate-pulse-slow">
+                    <i class="fa-solid fa-fire text-brand-orange"></i> HOT & FRESH STREET ROAST
+                </div>
+                
+                <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-none mb-6">
+                    TAKA TAKA <br>
+                    <span class="bg-gradient-to-r from-brand-yellow via-brand-orange to-brand-red bg-clip-text text-transparent text-glow">PERFECT KOTTU</span>
+                </h1>
+
+                <p class="text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto lg:mx-0 font-light mb-8 leading-relaxed">
+                    Welcome to <strong class="text-brand-yellow font-bold">KOTTU LAB</strong>! Experience the ultimate hot chop of Sri Lanka's finest Godamba Rotti, sizzling melted cheese, and secret aromatic masala blends.
+                </p>
+
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                    <a href="#customizer" onclick="playBladeSound()" class="blade-btn text-black font-extrabold text-lg px-8 py-4 rounded-2xl flex items-center gap-3 group transition-transform hover:scale-105 active:scale-95">
+                        <i class="fa-solid fa-flask text-xl"></i>
+                        <span>BUILD YOUR OWN FORMULA</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+
+                    <a href="#menu" onclick="playBladeSound()" class="px-8 py-4 rounded-2xl bg-brand-card hover:bg-white/10 border border-white/15 text-white font-bold text-lg flex items-center gap-3 transition-all hover:scale-105">
+                        <i class="fa-solid fa-utensils text-brand-orange"></i>
+                        <span>EXPLORE MENU</span>
+                    </a>
+                </div>
+
+                <!-- Stats / Quick Badges -->
+                <div class="grid grid-cols-3 gap-4 mt-12 pt-8 border-t border-white/10 font-mono">
+                    <div class="text-center lg:text-left">
+                        <div class="font-display text-3xl font-bold text-brand-yellow">100%</div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-wider">Fresh Rotti</div>
+                    </div>
+                    <div class="text-center lg:text-left">
+                        <div class="font-display text-3xl font-bold text-brand-orange">3 SPECIALS</div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-wider">Normal, Cheese, Masala</div>
+                    </div>
+                    <div class="text-center lg:text-left">
+                        <div class="font-display text-3xl font-bold text-brand-red">HOT & FAST</div>
+                        <div class="text-[10px] text-gray-400 uppercase tracking-wider">Live Sizzle Tawa</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Interactive Dish Visual -->
+            <div class="lg:col-span-5 relative flex justify-center">
+                <div class="relative w-72 h-72 sm:w-96 sm:h-96 rounded-full border-4 border-brand-orange/30 p-4 bg-gradient-to-b from-brand-card to-black shadow-2xl flex items-center justify-center group">
+                    
+                    <!-- Outer Rotating Ring -->
+                    <div class="absolute inset-0 rounded-full border-2 border-dashed border-brand-yellow/40 animate-spin" style="animation-duration: 25s;"></div>
+                    
+                    <!-- Central Hot Tawa Graphic -->
+                    <div class="w-full h-full rounded-full bg-gradient-to-br from-slate-900 via-brand-card to-black border-2 border-brand-orange/50 p-6 flex flex-col items-center justify-center text-center animate-flame relative overflow-hidden shadow-inner">
+                        <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-brand-red to-brand-yellow flex items-center justify-center mb-3 shadow-lg shadow-brand-orange/40 animate-sizzle">
+                            <i class="fa-solid fa-fire-burner text-4xl text-black"></i>
+                        </div>
+                        <span class="font-display text-3xl font-black text-brand-yellow tracking-wider">SIZZLING TAWA</span>
+                        <span class="font-mono text-xs text-brand-orange font-bold">220°C LIVE CHOP</span>
+                        <p class="text-[11px] text-gray-400 mt-1 max-w-[180px]">Fresh Godamba, Leeks, Egg & Spicy Gravy</p>
+                    </div>
+
+                    <!-- Floating Badges -->
+                    <div class="absolute -top-3 -right-2 bg-brand-red text-white text-xs font-black uppercase px-4 py-2 rounded-full shadow-xl border border-white/20 flex items-center gap-1.5 animate-bounce-subtle">
+                        <i class="fa-solid fa-pepper-hot text-brand-yellow"></i> EXTRA SPICY
+                    </div>
+
+                    <div class="absolute -bottom-3 -left-2 bg-brand-yellow text-black text-xs font-black uppercase px-4 py-2 rounded-full shadow-xl flex items-center gap-1.5">
+                        <i class="fa-solid fa-cheese text-brand-red"></i> REAL CHEESE PULL
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FEATURED SIGNATURE MENU SECTION -->
+    <section id="menu" class="py-20 relative bg-black/40 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div>
+                    <span class="text-brand-orange font-bold text-sm tracking-widest uppercase flex items-center gap-2">
+                        <i class="fa-solid fa-fire-flame-curved"></i> CULINARY SELECTION
+                    </span>
+                    <h2 class="font-display text-4xl sm:text-6xl font-extrabold uppercase mt-2">
+                        OUR SIGNATURE <span class="text-brand-yellow">KOTTU MENU</span>
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-1">Handcrafted with shredded Godamba rotti, fresh veggies, juicy meats, egg, and spicy gravy.</p>
+                </div>
+
+                <!-- Menu Filter Buttons -->
+                <div class="flex flex-wrap gap-2 font-mono text-xs font-bold">
+                    <button onclick="filterCategory('all')" class="cat-filter-btn active px-4 py-2 rounded-xl bg-brand-orange text-black transition">ALL DISHES</button>
+                    <button onclick="filterCategory('normal')" class="cat-filter-btn px-4 py-2 rounded-xl bg-brand-card text-gray-300 border border-white/10 hover:border-brand-orange transition">NORMAL KOTTU</button>
+                    <button onclick="filterCategory('cheese')" class="cat-filter-btn px-4 py-2 rounded-xl bg-brand-card text-gray-300 border border-white/10 hover:border-brand-orange transition">CHEESE KOTTU</button>
+                    <button onclick="filterCategory('masala')" class="cat-filter-btn px-4 py-2 rounded-xl bg-brand-card text-gray-300 border border-white/10 hover:border-brand-orange transition">MASALA KOTTU</button>
+                </div>
+            </div>
+
+            <!-- Menu Cards Grid -->
+            <div id="menuGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- 1. NORMAL KOTTU -->
+                <div class="menu-card normal bg-brand-card border border-white/10 rounded-3xl overflow-hidden card-glow flex flex-col justify-between group">
+                    <div class="p-6 space-y-4">
+                        <div class="relative h-48 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center p-4">
+                            <span class="absolute top-3 left-3 bg-brand-dark/80 backdrop-blur-md text-brand-yellow text-xs font-bold px-3 py-1 rounded-full border border-brand-yellow/30 font-mono">
+                                CLASSIC STREET
+                            </span>
+                            <div class="w-28 h-28 rounded-full bg-gradient-to-tr from-brand-orange to-brand-yellow flex items-center justify-center shadow-xl group-hover:scale-110 transition duration-300">
+                                <i class="fa-solid fa-bowl-food text-5xl text-black"></i>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="font-display text-2xl font-bold tracking-wide text-white">NORMAL CHICKEN KOTTU</h3>
+                                <span class="text-brand-yellow font-extrabold text-xl font-mono">LKR 950</span>
+                            </div>
+                            <p class="text-gray-400 text-xs leading-relaxed">
+                                Traditional Sri Lankan street style! Diced Godamba rotti pan-fried with scrambled egg, fresh leeks, carrots, onions, and rich spicy chicken gravy.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs font-mono text-gray-400">Heat: 🌶️🌶️ Medium</span>
+                        <button onclick="addItemToCart('Normal Chicken Kottu', 950, 'Classic shredded Godamba with chicken curry')" class="px-4 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-red text-black font-bold text-xs flex items-center gap-2 transition active:scale-95 shadow-lg">
+                            <i class="fa-solid fa-plus"></i> Add to Tray
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. CHEESE LAVA KOTTU -->
+                <div class="menu-card cheese bg-brand-card border border-white/10 rounded-3xl overflow-hidden card-glow flex flex-col justify-between group">
+                    <div class="p-6 space-y-4">
+                        <div class="relative h-48 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center p-4">
+                            <span class="absolute top-3 left-3 bg-brand-yellow/20 border border-brand-yellow/40 text-brand-yellow text-xs font-bold px-3 py-1 rounded-full font-mono">
+                                POPULAR 🔥
+                            </span>
+                            <div class="w-28 h-28 rounded-full bg-gradient-to-tr from-yellow-400 to-amber-600 flex items-center justify-center shadow-xl group-hover:scale-110 transition duration-300">
+                                <i class="fa-solid fa-cheese text-5xl text-black"></i>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="font-display text-2xl font-bold tracking-wide text-white">DOUBLE CHEESE LAVA KOTTU</h3>
+                                <span class="text-brand-yellow font-extrabold text-xl font-mono">LKR 1,350</span>
+                            </div>
+                            <p class="text-gray-400 text-xs leading-relaxed">
+                                Drowned in rich melted Mozzarella and full-cream milk sauce, roasted garlic, tender chicken chunks, and capsicum. Pure cheese bliss!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs font-mono text-brand-yellow">Creamy Mozzarella</span>
+                        <button onclick="addItemToCart('Double Cheese Lava Kottu', 1350, 'Loaded Mozzarella & Milk Sauce')" class="px-4 py-2.5 rounded-xl bg-brand-yellow hover:bg-amber-400 text-black font-bold text-xs flex items-center gap-2 transition active:scale-95 shadow-lg">
+                            <i class="fa-solid fa-plus"></i> Add to Tray
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. MASALA BURST KOTTU -->
+                <div class="menu-card masala bg-brand-card border border-white/10 rounded-3xl overflow-hidden card-glow flex flex-col justify-between group">
+                    <div class="p-6 space-y-4">
+                        <div class="relative h-48 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center p-4">
+                            <span class="absolute top-3 left-3 bg-brand-red/20 border border-brand-red/40 text-brand-red text-xs font-bold px-3 py-1 rounded-full font-mono">
+                                CHEF'S SPECIAL 🌶️
+                            </span>
+                            <div class="w-28 h-28 rounded-full bg-gradient-to-tr from-brand-red to-orange-700 flex items-center justify-center shadow-xl group-hover:scale-110 transition duration-300">
+                                <i class="fa-solid fa-pepper-hot text-5xl text-white"></i>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <h3 class="font-display text-2xl font-bold tracking-wide text-white">INDIAN MASALA BURST</h3>
+                                <span class="text-brand-yellow font-extrabold text-xl font-mono">LKR 1,200</span>
+                            </div>
+                            <p class="text-gray-400 text-xs leading-relaxed">
+                                Infused with hand-roasted Garam Masala, pure ghee, crushed black pepper, spicy roasted beef curry & caramelized onion ringlets.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs font-mono text-brand-red">Heat: 🌶️🌶️🌶️ High</span>
+                        <button onclick="addItemToCart('Indian Masala Burst Kottu', 1200, 'Roasted Masala & Pure Ghee Blend')" class="px-4 py-2.5 rounded-xl bg-brand-red hover:bg-red-600 text-white font-bold text-xs flex items-center gap-2 transition active:scale-95 shadow-lg">
+                            <i class="fa-solid fa-plus"></i> Add to Tray
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- LAB EXPERIMENT / CUSTOM FORMULA BUILDER SECTION -->
+    <section id="customizer" class="py-20 relative bg-brand-dark border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="px-3 py-1 rounded-full bg-brand-yellow/10 border border-brand-yellow/30 text-brand-yellow text-xs font-mono font-bold uppercase">
+                    <i class="fa-solid fa-flask"></i> Interactive Customizer
+                </span>
+                <h2 class="font-display text-4xl sm:text-6xl font-extrabold uppercase mt-3">
+                    BUILD YOUR OWN <span class="text-brand-orange">KOTTU FORMULA</span>
+                </h2>
+                <p class="text-gray-400 text-sm">Select base style, protein elements, spice pH scale, and booster add-ons.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Controls Grid -->
+                <div class="lg:col-span-8 bg-brand-card border border-white/10 rounded-3xl p-6 sm:p-8 space-y-8 shadow-xl">
+                    
+                    <!-- Step 1: Base -->
+                    <div>
+                        <label class="text-xs font-mono font-bold text-brand-yellow tracking-wider uppercase block mb-3">
+                            01. CHOOSE BASE ROTTI TYPE
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <button type="button" onclick="setBuilderBase('normal', 'Godamba Shredded Base', 500)" id="base-normal" class="builder-base p-4 rounded-2xl border border-brand-orange bg-brand-orange/10 text-left transition">
+                                <div class="font-bold text-white text-sm">Godamba Classic</div>
+                                <div class="text-xs text-gray-400 mt-1">Authentic shredded rotti</div>
+                                <div class="text-xs font-mono text-brand-yellow font-bold mt-2">LKR 500</div>
+                            </button>
+
+                            <button type="button" onclick="setBuilderBase('cheese', 'Mozzarella Cheese Base', 700)" id="base-cheese" class="builder-base p-4 rounded-2xl border border-white/10 bg-black/40 text-left transition">
+                                <div class="font-bold text-white text-sm">Cheese Lava Base</div>
+                                <div class="text-xs text-gray-400 mt-1">Mozzarella & creamy milk</div>
+                                <div class="text-xs font-mono text-brand-yellow font-bold mt-2">LKR 700</div>
+                            </button>
+
+                            <button type="button" onclick="setBuilderBase('masala', 'Aromatic Masala Base', 600)" id="base-masala" class="builder-base p-4 rounded-2xl border border-white/10 bg-black/40 text-left transition">
+                                <div class="font-bold text-white text-sm">Masala Gravy Base</div>
+                                <div class="text-xs text-gray-400 mt-1">Roasted Indian spices</div>
+                                <div class="text-xs font-mono text-brand-yellow font-bold mt-2">LKR 600</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Protein -->
+                    <div>
+                        <label class="text-xs font-mono font-bold text-brand-yellow tracking-wider uppercase block mb-3">
+                            02. SELECT PROTEIN INGREDIENT
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <button type="button" onclick="setBuilderProtein('Chicken', 350)" id="protein-Chicken" class="builder-protein p-3 rounded-xl border border-brand-orange bg-brand-orange/10 text-center transition">
+                                <div class="text-xs font-bold text-white">Chicken Curry</div>
+                                <div class="text-[11px] font-mono text-brand-yellow font-bold mt-1">+LKR 350</div>
+                            </button>
+                            <button type="button" onclick="setBuilderProtein('Beef', 400)" id="protein-Beef" class="builder-protein p-3 rounded-xl border border-white/10 bg-black/40 text-center transition">
+                                <div class="text-xs font-bold text-white">Spicy Beef</div>
+                                <div class="text-[11px] font-mono text-brand-yellow font-bold mt-1">+LKR 400</div>
+                            </button>
+                            <button type="button" onclick="setBuilderProtein('Egg', 150)" id="protein-Egg" class="builder-protein p-3 rounded-xl border border-white/10 bg-black/40 text-center transition">
+                                <div class="text-xs font-bold text-white">Double Egg</div>
+                                <div class="text-[11px] font-mono text-brand-yellow font-bold mt-1">+LKR 150</div>
+                            </button>
+                            <button type="button" onclick="setBuilderProtein('Seafood', 550)" id="protein-Seafood" class="builder-protein p-3 rounded-xl border border-white/10 bg-black/40 text-center transition">
+                                <div class="text-xs font-bold text-white">Devilled Seafood</div>
+                                <div class="text-[11px] font-mono text-brand-yellow font-bold mt-1">+LKR 550</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Spice Slider -->
+                    <div class="bg-black/40 p-5 rounded-2xl border border-white/10 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <label class="text-xs font-mono font-bold text-brand-yellow uppercase">03. SPICE pH LEVEL</label>
+                            <span id="spiceValDisplay" class="font-mono text-xs font-bold text-brand-red bg-brand-red/20 px-2.5 py-1 rounded">
+                                pH 3 - Hot (සැර වැඩි)
+                            </span>
+                        </div>
+                        <input type="range" min="1" max="5" value="3" oninput="updateSpiceScale(this.value)" class="w-full accent-brand-orange cursor-pointer">
+                        <div class="flex justify-between text-[10px] font-mono text-gray-400">
+                            <span>pH 1 Mild</span>
+                            <span>pH 2 Medium</span>
+                            <span>pH 3 Hot</span>
+                            <span>pH 4 Volcanic</span>
+                            <span>pH 5 LAB BURST 🔥</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Add-ons -->
+                    <div>
+                        <label class="text-xs font-mono font-bold text-brand-yellow tracking-wider uppercase block mb-3">
+                            04. FORMULA BOOSTER EXTRACTS
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-3 p-3 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-brand-orange transition">
+                                <input type="checkbox" onchange="toggleAddon('Extra Cheese', 250, this)" class="accent-brand-orange w-4 h-4 rounded">
+                                <div>
+                                    <div class="text-xs font-bold text-white">Extra Cheese Injection</div>
+                                    <div class="text-[10px] text-brand-yellow font-mono">+LKR 250</div>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-brand-orange transition">
+                                <input type="checkbox" onchange="toggleAddon('Roast Paan Crunch', 150, this)" class="accent-brand-orange w-4 h-4 rounded">
+                                <div>
+                                    <div class="text-xs font-bold text-white">Roast Paan Crunch</div>
+                                    <div class="text-[10px] text-brand-yellow font-mono">+LKR 150</div>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 bg-black/40 border border-white/10 rounded-xl cursor-pointer hover:border-brand-orange transition">
+                                <input type="checkbox" onchange="toggleAddon('Gravy Tube', 100, this)" class="accent-brand-orange w-4 h-4 rounded">
+                                <div>
+                                    <div class="text-xs font-bold text-white">Extra Spicy Gravy</div>
+                                    <div class="text-[10px] text-brand-yellow font-mono">+LKR 100</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Live Summary Display -->
+                <div class="lg:col-span-4 sticky top-28">
+                    <div class="bg-brand-card border-2 border-brand-orange/50 rounded-3xl p-6 space-y-6 shadow-2xl relative overflow-hidden">
+                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                            <span class="font-mono text-xs text-brand-yellow font-bold uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-vial"></i> FORMULA PREVIEW
+                            </span>
+                            <span class="text-[10px] font-mono text-gray-400">LAB-SPEC-2026</span>
+                        </div>
+
+                        <div class="space-y-3 font-mono text-xs">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Base Rotti:</span>
+                                <span id="summaryBase" class="font-bold text-white">Godamba Classic</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Protein:</span>
+                                <span id="summaryProtein" class="font-bold text-white">Chicken</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Spice Level:</span>
+                                <span id="summarySpice" class="font-bold text-brand-red">pH 3 (Hot)</span>
+                            </div>
+                            <div class="border-t border-white/10 pt-2 text-gray-400">
+                                <span class="text-[10px] uppercase font-bold text-gray-500 block">Add-ons:</span>
+                                <span id="summaryAddons" class="text-white italic">None</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/60 p-4 rounded-2xl border border-white/10 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] text-gray-400 font-mono block">TOTAL PRICE</span>
+                                <span id="summaryPrice" class="text-2xl font-black text-brand-yellow font-mono">LKR 850</span>
+                            </div>
+                            <i class="fa-solid fa-calculator text-2xl text-brand-orange"></i>
+                        </div>
+
+                        <button onclick="addFormulaToCart()" class="w-full py-4 rounded-xl blade-btn text-black font-black tracking-wider text-center shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus-circle"></i>
+                            <span>ADD FORMULA TO TRAY</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TAKA TAKA BEATS INTERACTIVE AUDIO SECTION -->
+    <section id="taka-taka" class="py-20 bg-black/60 border-b border-white/10 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+            <span class="text-brand-yellow font-mono text-xs font-bold uppercase tracking-widest px-3 py-1 bg-brand-yellow/10 border border-brand-yellow/30 rounded-full">
+                <i class="fa-solid fa-drum"></i> Sound Lab
+            </span>
+            <h2 class="font-display text-4xl sm:text-6xl font-black text-white">
+                PLAY THE <span class="text-brand-orange text-glow">TAKA TAKA BEATS</span>
+            </h2>
+            <p class="text-gray-400 text-sm max-w-xl mx-auto">
+                Tap the blade sound pads below to synthesize the iconic Sri Lankan Kottu blade chopping rhythm!
+            </p>
+
+            <!-- Sound Pads Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto font-mono">
+                <button onclick="playChopperTone(440, 'triangle')" class="p-6 rounded-2xl bg-brand-card border border-brand-orange/40 hover:bg-brand-orange hover:text-black font-bold text-brand-yellow transition active:scale-95 flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-scissors text-2xl"></i>
+                    <span>BLADE HIT A</span>
+                </button>
+                <button onclick="playChopperTone(320, 'square')" class="p-6 rounded-2xl bg-brand-card border border-brand-yellow/40 hover:bg-brand-yellow hover:text-black font-bold text-brand-orange transition active:scale-95 flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-utensils text-2xl"></i>
+                    <span>TAWA CLACK</span>
+                </button>
+                <button onclick="playChopperTone(580, 'sawtooth')" class="p-6 rounded-2xl bg-brand-card border border-brand-red/40 hover:bg-brand-red hover:text-white font-bold text-brand-red transition active:scale-95 flex flex-col items-center gap-2">
+                    <i class="fa-solid fa-fire text-2xl"></i>
+                    <span>SIZZLE HISS</span>
+                </button>
+                <button onclick="playFullTakaBeat()" class="p-6 rounded-2xl bg-gradient-to-br from-brand-orange to-brand-red text-black font-black transition active:scale-95 flex flex-col items-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-play text-2xl"></i>
+                    <span>AUTO RHYTHM</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- OUR STORY SECTION -->
+    <section id="about" class="py-20 bg-brand-card/50 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <span class="text-brand-orange font-bold text-xs uppercase tracking-widest font-mono">
+                        <i class="fa-solid fa-heart"></i> STREET FOOD REVOLUTION
+                    </span>
+                    <h2 class="font-display text-4xl sm:text-6xl font-black text-white">
+                        THE SCIENCE OF <br>
+                        <span class="text-brand-yellow">SRI LANKAN KOTTU</span>
+                    </h2>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        At <strong>Kottu Lab</strong>, we take Sri Lanka's most beloved street food and elevate it into a culinary science. From precision hand-chopped Godamba rotti to temperature-controlled tawa roasting, every portion is crafted hot to order.
+                    </p>
+                    
+                    <div class="grid sm:grid-cols-2 gap-4 font-mono text-xs">
+                        <div class="p-4 rounded-xl bg-black/40 border border-white/10">
+                            <i class="fa-solid fa-shield-halved text-brand-orange text-lg mb-2"></i>
+                            <div class="font-bold text-white">100% Fresh Daily</div>
+                            <div class="text-gray-400 mt-1">No pre-cooked rotti</div>
+                        </div>
+                        <div class="p-4 rounded-xl bg-black/40 border border-white/10">
+                            <i class="fa-solid fa-cheese text-brand-yellow text-lg mb-2"></i>
+                            <div class="font-bold text-white">Pure Dairy Cheese</div>
+                            <div class="text-gray-400 mt-1">Real Mozzarella pull</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial Box -->
+                <div class="bg-black/60 border border-brand-orange/30 p-8 rounded-3xl space-y-4 shadow-xl relative">
+                    <div class="text-brand-yellow text-xl">⭐⭐⭐⭐⭐</div>
+                    <p class="text-gray-300 italic text-sm">
+                        "Kottu Lab එකේ Double Cheese Lava Kottu එක සුපිරි! Taka-taka blade noise එකයි hot sizzling taste එකයි වෙනම experience එකක්!"
+                    </p>
+                    <div class="font-mono text-xs text-brand-orange font-bold border-t border-white/10 pt-4">
+                        – Kasun Fernando (Moratuwa)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOCATION & CONTACT SECTION -->
+    <section id="contact" class="py-20 relative bg-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <div class="lg:col-span-6 space-y-6">
+                    <span class="text-brand-yellow font-mono text-xs font-bold uppercase tracking-widest">
+                        <i class="fa-solid fa-map-location-dot"></i> HEADQUARTERS
+                    </span>
+                    <h2 class="font-display text-4xl sm:text-6xl font-black text-white">
+                        VISIT US OR <span class="text-brand-orange">ORDER DIRECT</span>
+                    </h2>
+                    <p class="text-gray-300 text-sm">
+                        Hot & sizzling express delivery within 30 minutes in Colombo, Moratuwa & Nugegoda areas.
+                    </p>
+
+                    <div class="space-y-4 font-mono text-xs">
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-brand-card border border-white/10">
+                            <i class="fa-solid fa-location-dot text-brand-orange text-xl mt-1"></i>
+                            <div>
+                                <span class="font-bold text-white block text-sm">Location Address</span>
+                                <span class="text-gray-400">No. 142, Galle Road, Moratuwa / Colombo, Sri Lanka</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-brand-card border border-white/10">
+                            <i class="fa-solid fa-phone text-brand-yellow text-xl mt-1"></i>
+                            <div>
+                                <span class="font-bold text-white block text-sm">Hotline / WhatsApp</span>
+                                <span class="text-gray-400">+94 77 123 4567 / +94 11 299 8888</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 p-4 rounded-2xl bg-brand-card border border-white/10">
+                            <i class="fa-solid fa-clock text-brand-red text-xl mt-1"></i>
+                            <div>
+                                <span class="font-bold text-white block text-sm">Operating Hours</span>
+                                <span class="text-gray-400">Daily: 4:00 PM – 1:00 AM (Late Night Tawa Sizzle)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="lg:col-span-6 bg-brand-card border border-white/10 rounded-3xl p-8 space-y-6 shadow-2xl">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane text-brand-orange"></i>
+                        Direct WhatsApp Inquiry / Table Reservation
+                    </h3>
+
+                    <form onsubmit="handleInquirySubmit(event)" class="space-y-4 text-xs font-mono">
+                        <div>
+                            <label class="block text-gray-400 mb-1">Your Name (නම)</label>
+                            <input type="text" id="inquiryName" required placeholder="Ex: Nimal Perera" class="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-orange">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-400 mb-1">Phone Number (දුරකථන අංකය)</label>
+                            <input type="tel" id="inquiryPhone" required placeholder="077XXXXXXX" class="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-orange">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-400 mb-1">Message / Event Order Details</label>
+                            <textarea id="inquiryMsg" rows="3" placeholder="I would like to order 4 Cheese Kottus for pickup..." class="w-full bg-black/60 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-brand-orange"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-brand-orange hover:bg-brand-red text-black font-extrabold rounded-xl transition text-sm shadow-lg">
+                            SEND MESSAGE NOW
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CART DRAWER MODAL -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden">
+        <div onclick="closeCartModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-brand-dark border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto shadow-2xl z-10">
+            <div class="space-y-6">
+                <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-basket-shopping text-brand-orange"></i>
+                        <h3 class="font-bold text-lg text-white font-mono">YOUR LAB TRAY</h3>
+                    </div>
+                    <button onclick="closeCartModal()" class="p-2 text-gray-400 hover:text-white rounded-lg">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div id="cartItemsList" class="space-y-4">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6 space-y-4 font-mono text-xs">
+                <div class="flex justify-between text-gray-400">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal" class="text-white font-bold">LKR 0</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Delivery Charge:</span>
+                    <span class="text-brand-yellow">LKR 250</span>
+                </div>
+                <div class="flex justify-between text-base text-white font-bold border-t border-white/10 pt-2">
+                    <span>Grand Total:</span>
+                    <span id="cartGrandTotal" class="text-brand-yellow font-black">LKR 250</span>
+                </div>
+
+                <button onclick="checkoutOrder()" id="checkoutBtn" disabled class="w-full py-4 rounded-xl bg-brand-orange disabled:opacity-40 text-black font-black text-sm tracking-wider transition shadow-lg">
+                    PLACE ORDER & GET RECEIPT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER CONFIRMATION RECEIPT MODAL -->
+    <div id="receiptModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeReceiptModal()" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+
+        <div class="relative bg-brand-card border border-brand-orange/50 w-full max-w-lg rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl z-10 text-gray-200">
+            <div class="text-center space-y-2 border-b border-white/10 pb-4">
+                <div class="w-12 h-12 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="text-2xl font-black text-white font-display uppercase tracking-wide">ORDER CONFIRMED!</h3>
+                <p class="text-xs font-mono text-brand-yellow">Lab Order Reference: <span id="receiptOrderRef">#KL-9081</span></p>
+            </div>
+
+            <div id="receiptDetailsContent" class="bg-black/60 p-4 rounded-2xl font-mono text-xs space-y-3 border border-white/10">
+                <!-- Dynamically filled -->
+            </div>
+
+            <div class="p-3 bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl text-center text-xs text-brand-yellow font-mono">
+                🔥 Your Kottu is now sizzling on the Tawa! Estimated time: 20-30 mins.
+            </div>
+
+            <button onclick="closeReceiptModal()" class="w-full py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl text-xs font-mono">
+                CLOSE & BACK TO MENU
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-white/10 py-10 font-mono text-xs text-gray-500 text-center">
+        <div class="max-w-7xl mx-auto px-4 space-y-3">
+            <div class="flex justify-center items-center gap-2 text-gray-300 font-bold">
+                <i class="fa-solid fa-fire-burner text-brand-orange"></i> KOTTU LAB SRI LANKA
+            </div>
+            <p>© 2026 KOTTU LAB. All rights reserved. Designed for Street Food Lovers.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        /* WEB AUDIO SYNTHESIZER FOR KOTTU BLADE CHOPPING */
+        let audioCtx = null;
+        let soundMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    audioCtx = new AudioContext();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playBladeSound() {
+            if (soundMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+
+            const now = audioCtx.currentTime;
+            const delays = [0, 0.08, 0.18];
+
+            delays.forEach((d) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(350 + Math.random() * 90, now + d);
+                osc.frequency.exponentialRampToValueAtTime(90, now + d + 0.04);
+
+                gain.gain.setValueAtTime(0.3, now + d);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + d + 0.04);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start(now + d);
+                osc.stop(now + d + 0.05);
+            });
+        }
+
+        function playChopperTone(freq, type) {
+            initAudio();
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = type || 'triangle';
+            osc.frequency.setValueAtTime(freq, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+
+            gain.gain.setValueAtTime(0.4, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.11);
+        }
+
+        function playFullTakaBeat() {
+            playChopperTone(450, 'triangle');
+            setTimeout(() => playChopperTone(320, 'square'), 120);
+            setTimeout(() => playChopperTone(500, 'sawtooth'), 240);
+            setTimeout(() => playChopperTone(380, 'triangle'), 360);
+        }
+
+        function toggleChoppingSound() {
+            soundMuted = !soundMuted;
+            const icon = document.getElementById('sound-icon');
+            const text = document.getElementById('sound-text');
+            if (soundMuted) {
+                icon.className = "fa-solid fa-volume-xmark text-brand-red";
+                text.innerText = "Sound OFF";
+            } else {
+                icon.className = "fa-solid fa-volume-high text-brand-yellow";
+                text.innerText = "Sound ON";
+                playBladeSound();
+            }
+        }
+
+        window.addEventListener('click', () => { initAudio(); }, { once: true });
+
+        /* HERO PARTICLE CANVAS */
+        const canvas = document.getElementById('sparkCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        class Spark {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 20;
+                this.vx = (Math.random() - 0.5) * 1.2;
+                this.vy = -(1 + Math.random() * 2);
+                this.size = 1.5 + Math.random() * 3.5;
+                this.alpha = 0.3 + Math.random() * 0.5;
+                this.color = Math.random() > 0.5 ? '#FF6B00' : '#FFC700';
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= 0.006;
+                if (this.alpha <= 0 || this.y < 0) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            resizeCanvas();
+            particles = [];
+            for (let i = 0; i < 35; i++) {
+                particles.push(new Spark());
+            }
+        }
+
+        function animateSparks() {
+            if (ctx && canvas) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+            }
+            requestAnimationFrame(animateSparks);
+        }
+
+        /* CUSTOM BUILDER STATE */
+        let builderState = {
+            baseName: 'Godamba Classic',
+            basePrice: 500,
+            proteinName: 'Chicken',
+            proteinPrice: 350,
+            spiceLevel: '3',
+            spiceText: 'pH 3 - Hot (සැර වැඩි)',
+            addons: [] // { name, price }
+        };
+
+        function setBuilderBase(id, name, price) {
+            playBladeSound();
+            builderState.baseName = name;
+            builderState.basePrice = price;
+
+            document.querySelectorAll('.builder-base').forEach(b => {
+                b.classList.remove('border-brand-orange', 'bg-brand-orange/10');
+                b.classList.add('border-white/10', 'bg-black/40');
+            });
+
+            const active = document.getElementById(`base-${id}`);
+            if (active) {
+                active.classList.remove('border-white/10', 'bg-black/40');
+                active.classList.add('border-brand-orange', 'bg-brand-orange/10');
+            }
+            renderFormulaSummary();
+        }
+
+        function setBuilderProtein(name, price) {
+            playBladeSound();
+            builderState.proteinName = name;
+            builderState.proteinPrice = price;
+
+            document.querySelectorAll('.builder-protein').forEach(b => {
+                b.classList.remove('border-brand-orange', 'bg-brand-orange/10');
+                b.classList.add('border-white/10', 'bg-black/40');
+            });
+
+            const active = document.getElementById(`protein-${name}`);
+            if (active) {
+                active.classList.remove('border-white/10', 'bg-black/40');
+                active.classList.add('border-brand-orange', 'bg-brand-orange/10');
+            }
+            renderFormulaSummary();
+        }
+
+        function updateSpiceScale(val) {
+            const labels = {
+                '1': 'pH 1 - Mild (මද සැර)',
+                '2': 'pH 2 - Medium (සාමාන්‍ය)',
+                '3': 'pH 3 - Hot (සැර වැඩි)',
+                '4': 'pH 4 - Volcanic Blast (අධික සැර)',
+                '5': 'pH 5 - LAB BURST 🔥'
+            };
+            builderState.spiceLevel = val;
+            builderState.spiceText = labels[val];
+            document.getElementById('spiceValDisplay').innerText = labels[val];
+            document.getElementById('summarySpice').innerText = labels[val];
+        }
+
+        function toggleAddon(name, price, element) {
+            playBladeSound();
+            if (element.checked) {
+                builderState.addons.push({ name, price });
+            } else {
+                builderState.addons = builderState.addons.filter(a => a.name !== name);
+            }
+            renderFormulaSummary();
+        }
+
+        function renderFormulaSummary() {
+            document.getElementById('summaryBase').innerText = builderState.baseName;
+            document.getElementById('summaryProtein').innerText = builderState.proteinName;
+
+            const addonEl = document.getElementById('summaryAddons');
+            if (builderState.addons.length === 0) {
+                addonEl.innerText = "None";
+            } else {
+                addonEl.innerText = builderState.addons.map(a => a.name).join(', ');
+            }
+
+            let total = builderState.basePrice + builderState.proteinPrice;
+            builderState.addons.forEach(a => total += a.price);
+            document.getElementById('summaryPrice').innerText = `LKR ${total}`;
+        }
+
+        function addFormulaToCart() {
+            let total = builderState.basePrice + builderState.proteinPrice;
+            builderState.addons.forEach(a => total += a.price);
+
+            const title = `Custom Formula (${builderState.baseName} + ${builderState.proteinName})`;
+            const details = `${builderState.spiceText} | Addons: ${builderState.addons.map(a=>a.name).join(', ') || 'None'}`;
+
+            addItemToCart(title, total, details);
+        }
+
+        /* CART STATE */
+        let cartItems = [];
+
+        function addItemToCart(title, price, desc) {
+            playBladeSound();
+            const existing = cartItems.find(i => i.title === title && i.desc === desc);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cartItems.push({ title, price, desc, qty: 1 });
+            }
+            updateCartDisplay();
+            openCartModal();
+        }
+
+        function updateCartDisplay() {
+            const countBadge = document.getElementById('cart-count-badge');
+            const listContainer = document.getElementById('cartItemsList');
+            const subtotalEl = document.getElementById('cartSubtotal');
+            const grandTotalEl = document.getElementById('cartGrandTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+
+            let subtotal = 0;
+            let count = 0;
+
+            if (cartItems.length === 0) {
+                countBadge.innerText = '0';
+                listContainer.innerHTML = `<div class="text-center py-10 text-gray-500 font-mono text-xs">Your tray is empty. Select a Kottu!</div>`;
+                subtotalEl.innerText = 'LKR 0';
+                grandTotalEl.innerText = 'LKR 250';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            checkoutBtn.disabled = false;
+            listContainer.innerHTML = '';
+
+            cartItems.forEach((item, idx) => {
+                subtotal += item.price * item.qty;
+                count += item.qty;
+
+                const card = document.createElement('div');
+                card.className = 'bg-black/60 p-4 rounded-2xl border border-white/10 space-y-2';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start font-mono">
+                        <div>
+                            <div class="font-bold text-white text-xs">${item.title}</div>
+                            <div class="text-[10px] text-gray-400 mt-0.5">${item.desc}</div>
+                        </div>
+                        <span class="text-xs text-brand-yellow font-bold">LKR ${item.price * item.qty}</span>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                        <div class="flex items-center gap-2 bg-brand-card px-2 py-1 rounded-lg border border-white/10 text-xs font-mono">
+                            <button onclick="changeQty(${idx}, -1)" class="text-gray-400 hover:text-white px-1">-</button>
+                            <span class="text-white font-bold">${item.qty}</span>
+                            <button onclick="changeQty(${idx}, 1)" class="text-gray-400 hover:text-white px-1">+</button>
+                        </div>
+                        <button onclick="removeCartItem(${idx})" class="text-xs text-brand-red font-mono hover:underline">Remove</button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
+            });
+
+            countBadge.innerText = count;
+            subtotalEl.innerText = `LKR ${subtotal}`;
+            grandTotalEl.innerText = `LKR ${subtotal + 250}`;
+        }
+
+        function changeQty(idx, delta) {
+            playBladeSound();
+            cartItems[idx].qty += delta;
+            if (cartItems[idx].qty <= 0) {
+                cartItems.splice(idx, 1);
+            }
+            updateCartDisplay();
+        }
+
+        function removeCartItem(idx) {
+            playBladeSound();
+            cartItems.splice(idx, 1);
+            updateCartDisplay();
+        }
+
+        function openCartModal() {
+            document.getElementById('cartModal').classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').classList.add('hidden');
+        }
+
+        function checkoutOrder() {
+            playBladeSound();
+            closeCartModal();
+
+            const refNum = '#KL-' + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('receiptOrderRef').innerText = refNum;
+
+            let subtotal = 0;
+            let itemsHtml = '';
+
+            cartItems.forEach(i => {
+                subtotal += i.price * i.qty;
+                itemsHtml += `
+                    <div class="flex justify-between py-1 border-b border-white/10">
+                        <span>${i.qty}x ${i.title}</span>
+                        <span class="font-bold text-brand-yellow">LKR ${i.price * i.qty}</span>
+                    </div>
+                `;
+            });
+
+            const content = document.getElementById('receiptDetailsContent');
+            content.innerHTML = `
+                <div class="space-y-1 mb-3">
+                    ${itemsHtml}
+                </div>
+                <div class="flex justify-between text-gray-400 pt-2 border-t border-white/10">
+                    <span>Subtotal:</span>
+                    <span>LKR ${subtotal}</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Delivery Charge:</span>
+                    <span>LKR 250</span>
+                </div>
+                <div class="flex justify-between text-white font-bold text-sm border-t border-white/10 pt-2">
+                    <span>TOTAL AMOUNT:</span>
+                    <span class="text-brand-yellow">LKR ${subtotal + 250}</span>
+                </div>
+            `;
+
+            cartItems = [];
+            updateCartDisplay();
+
+            document.getElementById('receiptModal').classList.remove('hidden');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').classList.add('hidden');
+        }
+
+        function filterCategory(category) {
+            playBladeSound();
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-orange', 'text-black');
+                btn.classList.add('bg-brand-card', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-brand-card', 'text-gray-300');
+            event.target.classList.add('bg-brand-orange', 'text-black');
+
+            const items = document.querySelectorAll('.menu-card');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function handleInquirySubmit(e) {
+            e.preventDefault();
+            playBladeSound();
+            const name = document.getElementById('inquiryName').value;
+            const phone = document.getElementById('inquiryPhone').value;
+            const msg = document.getElementById('inquiryMsg').value;
+            
+            const text = `Hi Kottu Lab! Inquiry from ${name} (${phone}): ${msg}`;
+            window.open(`https://wa.me/94771234567?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        window.onload = function() {
+            initParticles();
+            animateSparks();
+            renderFormulaSummary();
+        };
+    </script>
+</body>
+</html>
